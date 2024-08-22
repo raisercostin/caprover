@@ -3,22 +3,16 @@
     // Hover to view descriptions of existing attributes.
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
-    "configurations": [        
+    "configurations": [
         {
             "type": "node",
             "request": "attach",
             "name": "Attach to Remote",
-            "address": "127.0.0.1",
+            "address": "ws://127.0.0.1:38213/4a3e36cb-0db6-4928-a757-edce813041db",
             "port": 38000,
             "localRoot": "${workspaceFolder}",
             "remoteRoot": "/usr/src/app"
-        },
-        {
-            "type": "node",
-            "request": "attach",
-            "name": "Attach by Process ID",
-            "processId": "${command:PickProcess}",
-            "protocol": "inspector"
+            //"ws://127.0.0.1:38213/2e22d0b6-17a0-4fca-8a9e-85d95fe3440c"
         }
     ]
 }

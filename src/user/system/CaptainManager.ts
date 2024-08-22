@@ -26,6 +26,7 @@ import LoadBalancerManager from './LoadBalancerManager'
 import SelfHostedDockerRegistry from './SelfHostedDockerRegistry'
 import request = require('request')
 import fs = require('fs-extra')
+import EnvVars from '../../utils/EnvVars'
 
 const DEBUG_SALT = 'THIS IS NOT A REAL CERTIFICATE'
 
@@ -910,7 +911,8 @@ class CaptainManager {
         // We still allow users to specify the domains in their DNS settings individually
         // SubDomains that need to be added are "captain." "registry." "app-name."
         const url = `${uuid()}.${requestedCustomDomain}:${
-            CaptainConstants.configs.nginxPortNumber80
+            EnvVars.CAPTAIN_HOST_HTTP_PORT
+            //CaptainConstants.configs.nginxPortNumber80
         }`
 
         return self.domainResolveChecker

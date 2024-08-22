@@ -882,7 +882,7 @@ class DockerApi {
                 dataToCreate.TaskTemplate.ContainerSpec.Env.push(newSet)
             }
         }
-
+        Logger.d("createService: "+JSON.stringify(dataToCreate,null,2))
         return self.dockerode.createService(dataToCreate)
     }
 

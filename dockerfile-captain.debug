@@ -15,11 +15,11 @@ ENV ACCEPTED_TERMS=true
 # I don't know why, but for some reason this port
 # forwarding is necessary for NodeJs debugger to be able to attach!!
 
-RUN echo "(socat -v  tcp-listen:38000,reuseaddr,fork tcp:localhost:38213) & \n node --inspect-brk=38213 /usr/src/app/built/server.js" > /usr/run-brk.sh
-RUN echo "(socat -v  tcp-listen:38000,reuseaddr,fork tcp:localhost:38213) & \n node --inspect=38213 /usr/src/app/built/server.js" > /usr/run.sh
+RUN echo "(socat -v  tcp-listen:38000,reuseaddr,fork tcp:localhost:38213) & \n node --inspect-publish-uid=http --inspect-brk=38213 --require source-map-support/register /usr/src/app/built/server.js" > /usr/run-brk.sh
+RUN echo "(socat -v  tcp-listen:38000,reuseaddr,fork tcp:localhost:38213) & \n node --inspect-publish-uid=http --inspect=38213 --require source-map-support/register /usr/src/app/built/server.js" > /usr/run.sh
 RUN chmod +x /usr/run.sh
 RUN chmod +x /usr/run-brk.sh
-CMD ["/bin/bash" , "-c" , "/usr/run.sh" ]
+CMD ["/bin/bash" , "-c" , "/usr/run-brk.sh" ]
 
 ###  Debugging only works with chrome tools. Copy and past URL printed when service starts (starts with chrome-dev)
 ###  Just replace the port with 38000
