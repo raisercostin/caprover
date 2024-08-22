@@ -9,6 +9,7 @@ import DockerApi from '../../docker/DockerApi'
 import LoadBalancerInfo from '../../models/LoadBalancerInfo'
 import { AnyError } from '../../models/OtherTypes'
 import CaptainConstants from '../../utils/CaptainConstants'
+import EnvVars from '../../utils/EnvVars'
 import Logger from '../../utils/Logger'
 import CertbotManager from './CertbotManager'
 import fs = require('fs-extra')
@@ -481,7 +482,7 @@ class LoadBalancerManager {
                         serviceName: CaptainConstants.captainServiceName,
                         domain: captainDomain,
                         serviceExposedPort:
-                            CaptainConstants.captainServiceExposedPort,
+                          EnvVars.CAPTAIN_CONTAINER_EXPOSED_PORT,
                         defaultHtmlDir:
                             CaptainConstants.nginxStaticRootDir +
                             CaptainConstants.nginxDefaultHtmlDir,
@@ -603,25 +604,26 @@ class LoadBalancerManager {
             Logger.d(
                 'No Captain Nginx service is running. Creating one on captain node...'
             )
-
+            const portsToMap:IAppPort[] = [
+              {
+                protocol: 'tcp',
+                publishMode: 'host',
+                containerPort: EnvVars.CAPTAIN_CONTAINER_HTTP_PORT,
+                hostPort: EnvVars.CAPTAIN_HOST_HTTP_PORT,
+              },
+              {
+                protocol: 'tcp',
+                publishMode: 'host',
+                containerPort: EnvVars.CAPTAIN_CONTAINER_HTTPS_PORT,
+                hostPort: EnvVars.CAPTAIN_HOST_HTTPS_PORT,
+              },
+            ]
+            Logger.d('Creating Captain Nginx service with ports' +portsToMap)
             return dockerApi
                 .createServiceOnNodeId(
                     CaptainConstants.configs.nginxImageName,
                     CaptainConstants.nginxServiceName,
-                    [
-                        {
-                            protocol: 'tcp',
-                            publishMode: 'host',
-                            containerPort: 80,
-                            hostPort: CaptainConstants.nginxPortNumber,
-                        },
-                        {
-                            protocol: 'tcp',
-                            publishMode: 'host',
-                            containerPort: 443,
-                            hostPort: 443,
-                        },
-                    ],
+                    portsToMap,
                     nodeId,
                     undefined,
                     undefined,
@@ -731,7 +733,8 @@ class LoadBalancerManager {
                         0
                     )
                 } else {
-                    return createNginxServiceOnNode(myNodeId).then(function () {
+                  Logger.d('Captain Nginx is NOT running.. ')
+                  return createNginxServiceOnNode(myNodeId).then(function () {
                         return myNodeId
                     })
                 }

@@ -3,10 +3,10 @@ import Docker = require('dockerode')
 import { v4 as uuid } from 'uuid'
 import DockerService from '../models/DockerService'
 import {
-    IDockerApiPort,
-    IDockerContainerResource,
-    PreDeployFunction,
-    VolumesTypes,
+  IDockerApiPort,
+  IDockerContainerResource,
+  PreDeployFunction,
+  VolumesTypes,
 } from '../models/OtherTypes'
 import BuildLog from '../user/BuildLog'
 import CaptainConstants from '../utils/CaptainConstants'
@@ -795,7 +795,7 @@ class DockerApi {
                 dataToCreate.TaskTemplate.ContainerSpec.Env.push(newSet)
             }
         }
-
+        Logger.d("createService: "+JSON.stringify(dataToCreate,null,2))
         return self.dockerode.createService(dataToCreate)
     }
 
