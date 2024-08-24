@@ -1,22 +1,16 @@
 FROM node:18-alpine
 RUN apk update && apk upgrade --no-cache && apk add --update --no-cache make gcc g++ git curl openssl openssh
 
-RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
+COPY . ./
 
 
 # Build backend code
-
-COPY . /usr/src/app
-
 RUN npm ci && \
      npm cache clean --force && \
      npm run build 
 
-
-# Build frontend code
-
- # This quick hack invalidates the cache.
+# This quick hack invalidates the cache.
 ADD https://www.google.com /time.now
 
 # armV7 fails: https://github.com/yarnpkg/yarn/issues/5259 https://github.com/nodejs/docker-node/issues/1335
