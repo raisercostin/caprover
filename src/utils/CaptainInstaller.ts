@@ -99,7 +99,7 @@ function startServerOnPort_80_443_3000() {
       })
       res.write(FIREWALL_PASSED)
       res.end()
-    }).listen(EnvVar.CAPTAIN_CONTAINER_EXPOSED_PORT)
+    }).listen(EnvVar.CAPTAIN_CONTAINER_ADMIN_PORT)
 
     return new Promise<void>(function (resolve) {
       setTimeout(function () {
@@ -266,7 +266,7 @@ export function install() {
       return checkPortOrThrow(myIp4, EnvVar.CAPTAIN_HOST_HTTPS_PORT as any)
     })
     .then(function () {
-      return checkPortOrThrow(myIp4, EnvVar.CAPTAIN_HOST_EXPOSED_PORT as any)
+      return checkPortOrThrow(myIp4, EnvVar.CAPTAIN_HOST_ADMIN_PORT as any)
     })
     .then(function () {
       const imageName = CaptainConstants.configs.nginxImageName
@@ -311,6 +311,18 @@ export function install() {
       env.push({
         key: EnvVar.keys.IS_CAPTAIN_INSTANCE,
         value: '1',
+      })
+      env.push({
+        key: EnvVar.keys.CAPTAIN_HOST_ADMIN_PORT,
+        value: EnvVar.CAPTAIN_HOST_ADMIN_PORT + '',
+      })
+      env.push({
+        key: EnvVar.keys.CAPTAIN_HOST_HTTP_PORT,
+        value: EnvVar.CAPTAIN_HOST_HTTP_PORT + '',
+      })
+      env.push({
+        key: EnvVar.keys.CAPTAIN_HOST_HTTPS_PORT,
+        value: EnvVar.CAPTAIN_HOST_HTTPS_PORT + '',
       })
 
       if (EnvVar.DEFAULT_PASSWORD) {
@@ -366,8 +378,8 @@ export function install() {
       ports.push({
         protocol: 'tcp',
         publishMode: 'host',
-        containerPort: EnvVar.CAPTAIN_CONTAINER_EXPOSED_PORT,
-        hostPort: EnvVar.CAPTAIN_HOST_EXPOSED_PORT,
+        containerPort: EnvVar.CAPTAIN_CONTAINER_ADMIN_PORT,
+        hostPort: EnvVar.CAPTAIN_HOST_ADMIN_PORT,
       })
 
       return DockerApi.get().createServiceOnNodeId(

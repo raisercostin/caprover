@@ -188,7 +188,7 @@ const data = {
   // *********************     ETC       ************************
 
   disableFirewallCommand:
-    'ufw allow ' + EnvVars.CAPTAIN_HOST_HTTP_PORT + ',' + EnvVars.CAPTAIN_HOST_HTTPS_PORT + ',' + EnvVars.CAPTAIN_HOST_EXPOSED_PORT + ',996,7946,4789,2377/tcp; ufw allow 7946,4789,2377/udp; ',
+    'ufw allow ' + EnvVars.CAPTAIN_HOST_HTTP_PORT + ',' + EnvVars.CAPTAIN_HOST_HTTPS_PORT + ',' + EnvVars.CAPTAIN_HOST_ADMIN_PORT + ',996,7946,4789,2377/tcp; ufw allow 7946,4789,2377/udp; ',
 
   gitShaEnvVarKey: 'CAPROVER_GIT_COMMIT_SHA',
 }

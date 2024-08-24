@@ -482,7 +482,11 @@ class LoadBalancerManager {
                         serviceName: CaptainConstants.captainServiceName,
                         domain: captainDomain,
                         serviceExposedPort:
-                          EnvVars.CAPTAIN_CONTAINER_EXPOSED_PORT,
+			              EnvVars.CAPTAIN_HOST_ADMIN_PORT,
+			            serviceHttpsPort:
+			              EnvVars.CAPTAIN_HOST_HTTPS_PORT,
+			            serviceHttpPort:
+			              EnvVars.CAPTAIN_HOST_HTTP_PORT,
                         defaultHtmlDir:
                             CaptainConstants.nginxStaticRootDir +
                             CaptainConstants.nginxDefaultHtmlDir,
