@@ -385,7 +385,7 @@ class LoadBalancerManager {
 
     getInfo() {
         return new Promise<LoadBalancerInfo>(function (resolve, reject) {
-            const url = `http://${CaptainConstants.nginxServiceName}:${EnvVars.CAPTAIN_HOST_HTTP_PORT}/nginx_status`
+            const url = `http://${CaptainConstants.nginxServiceName}:${EnvVars.CAPTAIN_CONTAINER_HTTP_PORT}/nginx_status`
 
             request(url, function (error, response, body) {
                 if (error || !body) {
@@ -481,12 +481,12 @@ class LoadBalancerManager {
                         hasRootSsl: hasRootSsl,
                         serviceName: CaptainConstants.captainServiceName,
                         domain: captainDomain,
-                        serviceExposedPort:
-                            EnvVars.CAPTAIN_HOST_ADMIN_PORT,
-                        serviceHttpsPort:
-                            EnvVars.CAPTAIN_HOST_HTTPS_PORT,
-                        serviceHttpPort:
-                            EnvVars.CAPTAIN_HOST_HTTP_PORT,
+                        containerAdminPort:
+                            EnvVars.CAPTAIN_CONTAINER_ADMIN_PORT,
+                        containerHttpsPort:
+                            EnvVars.CAPTAIN_CONTAINER_HTTPS_PORT,
+                        containerHttpPort:
+                            EnvVars.CAPTAIN_CONTAINER_HTTP_PORT,
                         defaultHtmlDir:
                             CaptainConstants.nginxStaticRootDir +
                             CaptainConstants.nginxDefaultHtmlDir,
