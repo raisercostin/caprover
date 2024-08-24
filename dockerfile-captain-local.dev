@@ -1,0 +1,24 @@
+FROM node:18-alpine
+RUN apk update && apk upgrade --no-cache && apk add --update --no-cache make gcc g++ git curl openssl openssh
+WORKDIR /usr/src/app
+
+# Add frontend
+COPY --from=caprover/caprover:1.12.0 /usr/src/app/dist-frontend /usr/src/app/dist-frontend
+# Add backend
+COPY . ./
+# Build backend code
+#RUN --mount=type=bind,source=./,target=/usr/src/app/,rw \
+#    pwd && ls -al && \
+#    npm ci && \
+#    npm run build && \
+#    echo "caprover build finished"
+#    #npm cache clean --force
+
+# This quick hack invalidates the cache.
+#ADD https://www.google.com /time.now
+
+ENV NODE_ENV=production
+ENV PORT=3000
+EXPOSE 3000
+
+CMD ["node" , "./built/server.js"]

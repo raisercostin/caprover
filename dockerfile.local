@@ -1,0 +1,15 @@
+FROM node:18-alpine
+RUN apk add --update make gcc g++ git curl openssl openssh
+WORKDIR /usr/src/app
+# Add frontend
+COPY --from=caprover/caprover:1.12.0@sha256:2599970f78d5d909669716f9895f4fb271ae3bba07ee1ba89a4f5302805e06ed /usr/src/app/dist-frontend /usr/src/app/dist-frontend-original
+# Add backend
+#COPY ./built/* ./built/
+COPY . ./
+RUN (ls ./dist-frontend && echo "Using existing dist-frontend") || (mv ./dist-frontend-original ./dist-frontend && echo "Using caprover dist-frontend")
+
+ENV NODE_ENV=development
+ENV PORT=3000
+
+EXPOSE 3000
+CMD ["node" , "./built/server.js"]
