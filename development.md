@@ -11,6 +11,8 @@ There are also 2 support containers
 
 - nginx - reverse proxy and certificate hosting
 - certbot - certificates creator. Can be swapped.
+- caprover/netdata:v1.34.1 - optional
+- registry - optional
 
 ## Deployment
 
@@ -120,7 +122,9 @@ echo build server to $(pwd)/built/ &&
     npm run build
 echo add frontend to $(pwd)/dist-frontend/ &&
     printf 'FROM caprover/caprover:1.12.0 AS source \n FROM scratch \n COPY --from=source /usr/src/app/dist-frontend /dist-frontend' | docker buildx build -f- --output . .
-echo run server &&
+echo The debug image `captain-debug:latest` is latest `caprover/caprover:latest` image. We don't need to build it as `/captain` and `/usr/src/app` will be local.
+docker tag  caprover/caprover:latest captain-debug
+echo Run server using latest caprover image but anyway with current app volume. The same volume will be mounted by installer.&&
     docker run --rm \
     --name captain-now \
     -e ACCEPTED_TERMS=true \
@@ -129,13 +133,21 @@ echo run server &&
     -e "CAPTAIN_HOST_HTTP_PORT=23080" \
     -e "CAPTAIN_HOST_HTTPS_PORT=23443" \
     -e "CAPTAIN_HOST_ADMIN_PORT=23000" \
+    -e NODE_OPTIONS='--inspect-publish-uid=http,stderr --inspect=38000 --require source-map-support/register' \
+    -p 38000:38000 \
     -v /var/run/docker.sock:/var/run/docker.sock \
     -v /captain:/captain \
     -v $(pwd):/usr/src/app \
     -w /usr/src/app \
-    node:18-alpine \
+    captain-debug:latest \
     node ./built/server.js
+
+echo You should see something like \
+    Debugger listening on ws://127.0.0.1:38000/6bc8d88a-bfc4-43eb-8916-8b642e59d78f \
+    For help, see: https://nodejs.org/en/docs/inspector \
+    Captain Starting ... \
+echo use --inspect-brk=38000 instead to wait for the debugging process to connect
+
 docker service logs --follow captain-captain
 ```
 
-###
