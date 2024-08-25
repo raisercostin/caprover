@@ -17,6 +17,7 @@ import LoginRouter from './routes/login/LoginRouter'
 import UserRouter from './routes/user/UserRouter'
 import CaptainManager from './user/system/CaptainManager'
 import CaptainConstants from './utils/CaptainConstants'
+import EnvVars from './utils/EnvVars'
 import Logger from './utils/Logger'
 import Utils from './utils/Utils'
 
@@ -83,7 +84,7 @@ app.use(function (req, res, next) {
             req.secure || req.get('X-Forwarded-Proto') === 'https'
 
         if (!isRequestSsl) {
-            const newUrl = `https://${req.get('host')}${req.originalUrl}`
+            const newUrl = `https://${req.get('host')}:${EnvVars.CAPTAIN_HOST_HTTPS_PORT}${req.originalUrl}`
             res.redirect(302, newUrl)
             return
         }
@@ -112,7 +113,8 @@ app.use(CaptainConstants.netDataRelativePath, function (req, res, next) {
 
         const newUrl =
             (isRequestSsl ? 'https://' : 'http://') +
-            req.get('host') +
+            req.get('host') + ':' +
+            (isRequestSsl ? EnvVars.CAPTAIN_HOST_HTTPS_PORT : EnvVars.CAPTAIN_HOST_HTTP_PORT) +
             CaptainConstants.netDataRelativePath +
             '/'
         res.redirect(302, newUrl)
