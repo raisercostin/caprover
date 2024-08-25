@@ -208,8 +208,8 @@ export function install() {
                     `
                 Add the following to the installer line:
                 -e ACCEPTED_TERMS=true
-                
-                Terms of service must be accepted before installation, view them here: 
+
+                Terms of service must be accepted before installation, view them here:
                 https://github.com/caprover/caprover/blob/master/TERMS_AND_CONDITIONS.md
                 `.trim()
                 )
@@ -281,7 +281,10 @@ export function install() {
         .then(function () {
             const imageName = CaptainConstants.configs.certbotImageName
             console.log(`Pulling: ${imageName}`)
-            return DockerApi.get().pullImage(imageName, undefined)
+            return DockerApi.get().pullImage(imageName, undefined).catch(function (onrejected) {
+                console.log(`Continnuing failed pull, maybe image already exists: ${imageName}.`, onrejected)
+                return Promise.resolve()
+            })
         })
         .then(function () {
             return backupManger.checkAndPrepareRestoration()
