@@ -2,14 +2,15 @@
 
 The caprover server has three internal parts all deployed in the same image:
 
-- installer - for (re)creating a swarm with a server node that also serves the frontend
-- server -
-- frontend
+- caprover - single image containing the parts:
+- installer - for (re)creating a service (and a swarm). Is a small part of backend that just bootstraps.
+- backend - administrative server of entire swarm
+- frontend - administrative UI
 
 There are also 2 support containers
 
-- nginx server
-- certbot
+- nginx - reverse proxy and certificate hosting
+- certbot - certificates creator. Can be swapped.
 
 ## Deployment
 
@@ -19,12 +20,15 @@ There are also 2 support containers
    - in my case synology-DSM7 has an existing nginx listening on 80 and 443 and own certificate management
 2. [x] Certificates with dns not http port 80 that is occupied
    - <https://caprover.com/docs/certbot-config.html#customize-certbot-command-to-use-dns-01-challenge>
-3. [ ] Fix redirects when forced https
+3. [x] Fix redirects when forced https
 4. [ ] Caprover-frontend - showing the new ports - low priority
+5. [ ] Check netdata urls
+6. [ ] Check self hosted registry
+7. [ ] Check adding nodes
 
 #### Certbot with DNS challange - a must for other ports hosting
 
-```
+```shell
 echo Create a certbot with a similar version with the default one used by caprover: <https://github.com/caprover/caprover/blob/master/src/utils/CaptainConstants.ts#L58>
 printf 'FROM certbot/dns-cloudflare:v2.11.0 \n ENTRYPOINT ["/bin/sh", "-c"] \n CMD ["tail -f /dev/null"]' | docker build -t certbot/dns-cloudflare:v2.11.0-caprover-customized -f- .
 
@@ -122,9 +126,9 @@ echo run server &&
     -e ACCEPTED_TERMS=true \
     -e "CAPTAIN_IS_DEBUG=1" \
     -e "MAIN_NODE_IP_ADDRESS=127.0.0.1" \
-    -e "CAPTAIN_HOST_HTTP_PORT=10080" \
-    -e "CAPTAIN_HOST_HTTPS_PORT=10443" \
-    -e "CAPTAIN_HOST_ADMIN_PORT=13000" \
+    -e "CAPTAIN_HOST_HTTP_PORT=23080" \
+    -e "CAPTAIN_HOST_HTTPS_PORT=23443" \
+    -e "CAPTAIN_HOST_ADMIN_PORT=23000" \
     -v /var/run/docker.sock:/var/run/docker.sock \
     -v /captain:/captain \
     -v $(pwd):/usr/src/app \
