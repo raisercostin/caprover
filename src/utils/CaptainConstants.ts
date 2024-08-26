@@ -49,7 +49,7 @@ const configs = {
 
     overlayNetworkOverride: {},
 
-    useExistingSwarm: false,
+    useExistingSwarm: EnvVars.USE_EXISTING_SWARM,
 
     proApiDomains: ['https://pro.caprover.com'],
 
