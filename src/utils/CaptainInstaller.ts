@@ -235,7 +235,7 @@ export function install() {
                 )
             }
 
-            if (CaptainConstants.isDebug) {
+            if (CaptainConstants.isDebug && !CaptainConstants.configs.useExistingSwarm) {
                 return new Promise<string>(function (resolve, reject) {
                     DockerApi.get()
                         .swarmLeave(true)
