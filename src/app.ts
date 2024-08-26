@@ -84,7 +84,7 @@ app.use(function (req, res, next) {
             req.secure || req.get('X-Forwarded-Proto') === 'https'
 
         if (!isRequestSsl) {
-            const newUrl = `https://${req.get('host')}:${EnvVars.CAPTAIN_HOST_HTTPS_PORT}${req.originalUrl}`
+            const newUrl = `https://${req.hostname}:${EnvVars.CAPTAIN_HOST_HTTPS_PORT}${req.originalUrl}`
             res.redirect(302, newUrl)
             return
         }
@@ -113,7 +113,7 @@ app.use(CaptainConstants.netDataRelativePath, function (req, res, next) {
 
         const newUrl =
             (isRequestSsl ? 'https://' : 'http://') +
-            req.get('host') + ':' +
+            req.hostname + ':' +
             (isRequestSsl ? EnvVars.CAPTAIN_HOST_HTTPS_PORT : EnvVars.CAPTAIN_HOST_HTTP_PORT) +
             CaptainConstants.netDataRelativePath +
             '/'
