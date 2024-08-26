@@ -102,7 +102,21 @@ class DockerApi {
     public dockerNeedsUpdate = false
 
     constructor(connectionParams: Docker.DockerOptions) {
-        this.dockerode = new Docker(connectionParams)
+        const dockerodeOriginal = new Docker(connectionParams)
+        this.dockerode =
+            !EnvVars.SHOW_DOCKER_COMMANDS ? dockerodeOriginal :
+            new Proxy(dockerodeOriginal, {
+            get(target, property) {
+              const originalMethod = (target as any)[property];
+              if (typeof originalMethod === 'function') {
+                return function (...args: any[]) {
+                  console.log(`docker> ${String(property)}`,args);
+                  return originalMethod.apply(target, args);
+                };
+    }
+              return originalMethod;
+            }
+          });
     }
 
     static get() {
