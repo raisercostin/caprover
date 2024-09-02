@@ -10,7 +10,7 @@
         "lint-fix": "eslint --fix -c .eslintrc.js --ext .ts ./src",
         "formatter": "prettier --check './src/**/*.ts'",
         "formatter-write": "prettier --write './src/**/*.ts'",
-        "build": "echo 'RECOMPILING' && npx madge --circular --exclude caprover-frontend --extensions ts ./ && rm -rf ./built && npx tsc && echo 'Build successful'",
+        "build": "echo 'RECOMPILING' && npx madge --circular --exclude caprover-frontend --extensions ts ./ && rm -rf ./built && npx tsc --diagnostics && echo 'Build successful'",
         "test": "jest"
     },
     "dependencies": {
