@@ -15,7 +15,7 @@ const CONSTANT_FILE_OVERRIDE_USER =
     CAPTAIN_DATA_DIRECTORY + '/config-override.json'
 
 const configs = {
-    publishedNameOnDockerHub: 'caprover/caprover',
+    publishedNameOnDockerHub: EnvVars.CAPTAIN_IS_DEBUG ? EnvVars.DEBUG_IMAGE_NAME : 'caprover/caprover',
 
     version: '1.12.0',
 
@@ -229,7 +229,7 @@ if (data.isDebug) {
     }
 
     //data.debugSourceDirectory = devDirectoryOnLocalMachine
-    data.configs.publishedNameOnDockerHub = 'captain-debug'
+    data.configs.publishedNameOnDockerHub = EnvVars.DEBUG_IMAGE_NAME
     //data.nginxPortNumber = 80
 }
 
