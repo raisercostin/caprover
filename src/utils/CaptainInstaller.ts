@@ -368,7 +368,7 @@ export function install() {
                 })
 
                 volumeToMount.push({
-                    hostPath: CaptainConstants.debugSourceDirectory,
+                    hostPath: EnvVar.DEBUG_SOURCE_DIRECTORY ?? (()=>{throw new Error('DEBUG_SOURCE_DIRECTORY is not set')})(),
                     containerPath: CaptainConstants.sourcePathInContainer,
                 })
 

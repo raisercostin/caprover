@@ -151,3 +151,27 @@ echo use --inspect-brk=38000 instead to wait for the debugging process to connec
 docker service logs --follow captain-captain
 ```
 
+### Development Snapshot with Existing Frontend
+
+This is fastest if no changes are needed in frontend.
+
+```shell
+echo build with latest released frontend version
+docker build -t raisercostin/caprover-snapshot -f dockerfile-captain.snapshot .
+
+echo build with specific frontend version
+docker build -t raisercostin/caprover-snapshot -f dockerfile-captain.snapshot --build-arg CAPROVER_FRONTEND_VERSION=1.11.0 .
+
+echo test it
+docker run --rm --name captain-now -e DEBUG_SOURCE_DIRECTORY=$(pwd) -e SHOW_DOCKER_COMMANDS=true -e ACCEPTED_TERMS=true -e "CAPTAIN_IS_DEBUG=1" -e "MAIN_NODE_IP_ADDRESS=127.0.0.1" -e "CAPTAIN_HOST_HTTP_PORT=15001" -e "CAPTAIN_HOST_HTTPS_PORT=15000" -e "CAPTAIN_HOST_ADMIN_PORT=15002" -v /var/run/docker.sock:/var/run/docker.sock -v /captain:/captain raisercostin/caprover-snapshot
+
+echo push it to be used elsewere
+docker push raisercostin/caprover-snapshot
+```
+
+### Development Snapshot with Latest Frontend
+
+```shell
+echo build with latest released frontend version
+docker build -t raisercostin/caprover-snapshot-all -f dockerfile-captain.snapshot-all .
+```

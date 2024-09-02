@@ -217,18 +217,18 @@ overrideConfigFromFile(CONSTANT_FILE_OVERRIDE_BUILD)
 overrideConfigFromFile(CONSTANT_FILE_OVERRIDE_USER)
 
 if (data.isDebug) {
-    const devDirectoryOnLocalMachine = fs
-        .readFileSync(__dirname + '/../../currentdirectory')
-        .toString()
-        .trim()
+    // const devDirectoryOnLocalMachine = fs
+    //     .readFileSync(__dirname + '/../../currentdirectory')
+    //     .toString()
+    //     .trim()
 
-    if (!devDirectoryOnLocalMachine) {
+    if (!EnvVars.DEBUG_SOURCE_DIRECTORY) {
         throw new Error(
-            'For development purposes, you need to assign your local directory here'
+            'For development purposes, you need to assign your local directory with `-e DEBUG_SOURCE_DIRECTORY=$(pwd)`'
         )
     }
 
-    data.debugSourceDirectory = devDirectoryOnLocalMachine
+    //data.debugSourceDirectory = devDirectoryOnLocalMachine
     data.configs.publishedNameOnDockerHub = 'captain-debug'
     //data.nginxPortNumber = 80
 }
