@@ -1,0 +1,10 @@
+*
+!package.json
+!package-lock.json
+!tsconfig.json
+!jest.config.js
+!src/
+!public/
+!template/
+!dockerfiles/
+!captain-sample-apps/
