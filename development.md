@@ -32,13 +32,14 @@ There are also 2 support containers
 
 ```shell
 echo Create a certbot with a similar version with the default one used by caprover: <https://github.com/caprover/caprover/blob/master/src/utils/CaptainConstants.ts#L58>
-printf 'FROM certbot/dns-cloudflare:v2.11.0 \n ENTRYPOINT ["/bin/sh", "-c"] \n CMD ["tail -f /dev/null"]' | docker build -t certbot/dns-cloudflare:v2.11.0-caprover-customized -f- .
+printf 'FROM certbot/dns-cloudflare:v2.11.0 \n ENTRYPOINT ["/bin/sh", "-c"] \n CMD ["tail -f /dev/null"]' | docker build -t raisercostin/certbot-dns-cloudflare:v2.11.0-daemon -f- .
+docker push raisercostin/certbot-dns-cloudflare:v2.11.0-daemon
 
 # keep `'EOF'` otherwise the ${domainName} will be interpolated before writing the file
 sudo tee /captain/data/config-override.json <<'EOF'
 {
   "skipVerifyingDomains": "true",
-  "certbotImageName": "certbot/dns-cloudflare:v2.11.0-caprover-customized",
+  "certbotImageName": "raisercostin/certbot-dns-cloudflare:v2.11.0-daemon",
   "certbotCertCommandRules": [
     {
       "domain": "*",
@@ -162,8 +163,8 @@ docker build -t raisercostin/caprover-snapshot -f dockerfile-captain.snapshot .
 echo build with specific frontend version
 docker build -t raisercostin/caprover-snapshot -f dockerfile-captain.snapshot --build-arg CAPROVER_FRONTEND_VERSION=1.11.0 .
 
-echo test it
-docker run --rm --name captain-now -e DEBUG_SOURCE_DIRECTORY=$(pwd) -e SHOW_DOCKER_COMMANDS=true -e ACCEPTED_TERMS=true -e "CAPTAIN_IS_DEBUG=1" -e "MAIN_NODE_IP_ADDRESS=127.0.0.1" -e "CAPTAIN_HOST_HTTP_PORT=15001" -e "CAPTAIN_HOST_HTTPS_PORT=15000" -e "CAPTAIN_HOST_ADMIN_PORT=15002" -v /var/run/docker.sock:/var/run/docker.sock -v /captain:/captain raisercostin/caprover-snapshot
+echo "Test it. Add DEBUG_IMAGE_NAME (default value: captain-debug)"
+docker run --rm --name captain-now -e DEBUG_SOURCE_DIRECTORY=$(pwd) -e DEBUG_IMAGE_NAME=raisercostin/caprover-snapshot -e SHOW_DOCKER_COMMANDS=true -e ACCEPTED_TERMS=true -e "CAPTAIN_IS_DEBUG=1" -e "MAIN_NODE_IP_ADDRESS=127.0.0.1" -e "CAPTAIN_HOST_HTTP_PORT=15001" -e "CAPTAIN_HOST_HTTPS_PORT=15000" -e "CAPTAIN_HOST_ADMIN_PORT=15002" -v /var/run/docker.sock:/var/run/docker.sock -v /captain:/captain raisercostin/caprover-snapshot
 
 echo push it to be used elsewere
 docker push raisercostin/caprover-snapshot
