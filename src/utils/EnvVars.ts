@@ -53,7 +53,7 @@ export default {
 
   DEBUG_SOURCE_DIRECTORY: process.env.DEBUG_SOURCE_DIRECTORY,
 
-  DEBUG_IMAGE_NAME: process.env.DEBUG_IMAGE_NAME ?? 'captain-debug',
+  CAPROVER_IMAGE : process.env.CAPROVER_IMAGE,
 
   SHOW_DOCKER_COMMANDS: !!process.env.SHOW_DOCKER_COMMANDS,
 

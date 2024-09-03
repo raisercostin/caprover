@@ -163,8 +163,8 @@ docker build -t raisercostin/caprover-snapshot -f dockerfile-captain.snapshot .
 echo build with specific frontend version
 docker build -t raisercostin/caprover-snapshot -f dockerfile-captain.snapshot --build-arg CAPROVER_FRONTEND_VERSION=1.11.0 .
 
-echo "Test it. Add DEBUG_IMAGE_NAME (default value: captain-debug)"
-docker run --rm --name captain-now -e DEBUG_SOURCE_DIRECTORY=$(pwd) -e DEBUG_IMAGE_NAME=raisercostin/caprover-snapshot -e SHOW_DOCKER_COMMANDS=true -e ACCEPTED_TERMS=true -e "CAPTAIN_IS_DEBUG=1" -e "MAIN_NODE_IP_ADDRESS=127.0.0.1" -e "CAPTAIN_HOST_HTTP_PORT=15001" -e "CAPTAIN_HOST_HTTPS_PORT=15000" -e "CAPTAIN_HOST_ADMIN_PORT=15002" -v /var/run/docker.sock:/var/run/docker.sock -v /captain:/captain raisercostin/caprover-snapshot
+echo "Test it. Add CAPROVER_IMAGE (default value: caprover/caprover and captain-debug if CAPTAIN_IS_DEBUG=1)"
+docker run --rm --name captain-now -e DEBUG_SOURCE_DIRECTORY=$(pwd) -e CAPROVER_IMAGE=raisercostin/caprover-snapshot -e SHOW_DOCKER_COMMANDS=true -e ACCEPTED_TERMS=true -e "CAPTAIN_IS_DEBUG=1" -e "MAIN_NODE_IP_ADDRESS=127.0.0.1" -e "CAPTAIN_HOST_HTTP_PORT=15001" -e "CAPTAIN_HOST_HTTPS_PORT=15000" -e "CAPTAIN_HOST_ADMIN_PORT=15002" -v /var/run/docker.sock:/var/run/docker.sock -v /captain:/captain raisercostin/caprover-snapshot
 
 echo push it to be used elsewere
 docker push raisercostin/caprover-snapshot
