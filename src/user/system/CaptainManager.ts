@@ -14,8 +14,8 @@ import FeatureFlags from '../FeatureFlags'
 import ServiceManager from '../ServiceManager'
 import { EventLoggerFactory } from '../events/EventLogger'
 import {
-    CapRoverEventFactory,
-    CapRoverEventType,
+  CapRoverEventFactory,
+  CapRoverEventType,
 } from '../events/ICapRoverEvent'
 import ProManager from '../pro/ProManager'
 import BackupManager from './BackupManager'
@@ -26,7 +26,6 @@ import LoadBalancerManager from './LoadBalancerManager'
 import SelfHostedDockerRegistry from './SelfHostedDockerRegistry'
 import request = require('request')
 import fs = require('fs-extra')
-import EnvVars from '../../utils/EnvVars'
 
 const DEBUG_SALT = 'THIS IS NOT A REAL CERTIFICATE'
 
@@ -911,8 +910,7 @@ class CaptainManager {
         // We still allow users to specify the domains in their DNS settings individually
         // SubDomains that need to be added are "captain." "registry." "app-name."
         const url = `${uuid()}.${requestedCustomDomain}:${
-            EnvVars.CAPTAIN_HOST_HTTP_PORT
-            //CaptainConstants.configs.nginxPortNumber80
+            CaptainConstants.configs.nginxPortNumber80
         }`
 
         return self.domainResolveChecker

@@ -63,8 +63,7 @@ export default class DomainResolveChecker {
             })
             .then(function () {
                 return new Promise<void>(function (resolve, reject) {
-                    //const url = `http://${domainName}:${CaptainConstants.configs.nginxPortNumber80}${captainConfirmationPath}`
-                    const url = `http://${domainName}:${EnvVars.CAPTAIN_HOST_HTTP_PORT}${captainConfirmationPath}`
+                    const url = `http://${domainName}:${CaptainConstants.configs.nginxPortNumber80}${captainConfirmationPath}`
 
                     request(
                         url,
