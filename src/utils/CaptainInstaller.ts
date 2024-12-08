@@ -213,8 +213,8 @@ export function install() {
                     `
                 Add the following to the installer line:
                 -e ACCEPTED_TERMS=true
-
-                Terms of service must be accepted before installation, view them here:
+                
+                Terms of service must be accepted before installation, view them here: 
                 https://github.com/caprover/caprover/blob/master/TERMS_AND_CONDITIONS.md
                 `.trim()
                 )
@@ -397,7 +397,7 @@ export function install() {
                 })
 
                 volumeToMount.push({
-                    hostPath: EnvVar.DEBUG_SOURCE_DIRECTORY ?? (()=>{throw new Error('DEBUG_SOURCE_DIRECTORY is not set')})(),
+                    hostPath: CaptainConstants.debugSourceDirectory,
                     containerPath: CaptainConstants.sourcePathInContainer,
                 })
 

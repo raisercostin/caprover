@@ -14,8 +14,8 @@ import FeatureFlags from '../FeatureFlags'
 import ServiceManager from '../ServiceManager'
 import { EventLoggerFactory } from '../events/EventLogger'
 import {
-  CapRoverEventFactory,
-  CapRoverEventType,
+    CapRoverEventFactory,
+    CapRoverEventType,
 } from '../events/ICapRoverEvent'
 import ProManager from '../pro/ProManager'
 import BackupManager from './BackupManager'

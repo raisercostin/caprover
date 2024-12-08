@@ -7,7 +7,6 @@ import CertbotManager from './CertbotManager'
 import LoadBalancerManager from './LoadBalancerManager'
 import request = require('request')
 import fs = require('fs-extra')
-import EnvVars from '../../utils/EnvVars'
 
 export default class DomainResolveChecker {
     constructor(
