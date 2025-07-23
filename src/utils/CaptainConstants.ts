@@ -219,9 +219,9 @@ const data = {
 }
 
 function overrideConfigFromFile(fileName: string) {
-    const overridingValuesConfigs = fs.readJsonSync(fileName, {
-        throws: false,
-    })
+    const overridingValuesConfigs = fs.existsSync(fileName)
+        ? (() => { try { return fs.readJsonSync(fileName) } catch (e) { console.warn(`Failed to read ${fileName}:`, e); throw e } })()
+        : undefined
 
     if (overridingValuesConfigs) {
         for (const prop in overridingValuesConfigs) {
